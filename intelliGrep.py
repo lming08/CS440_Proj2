@@ -70,8 +70,8 @@ def intelliGrepBase( files ):
 		}
 		for key,string in trainStrings.items():
 			trainStringCount[key] = len( re.findall(string, cleanData) )
-	
-			
+
+
 		maxTup = max( trainStringCount.items(), key=operator.itemgetter(1) );
 		ansPossibilities = [x for x in trainStringCount if trainStringCount[x] == maxTup[1]];
 		maxVal = random.choice( ansPossibilities );
@@ -93,9 +93,9 @@ def intelliGrepImproved( files ):
 	dtFileNum = 0
 	lFileNum = 0
 	trainStrings = {
-		"DR": "Deed of Reconveyance",
-		"DT": "Deed of Trust",
-		"L": "Lien"
+		"DR": "DEED OF RECONVEYANCE",
+		"DT": "DEED OF TRUST",
+		"L": "LIEN"
 	}
 	trainDataCount = {
 		"DR": 0,
@@ -116,8 +116,8 @@ def intelliGrepImproved( files ):
 			"L": 0
 		}
 		for key,string in trainStrings.items():
-			trainStringCount[key] = len( re.findall(string, cleanData) ) + len( re.findall( string.upper(), cleanData) ) 
-		
+			trainStringCount[key] = len( re.findall(string, cleanData) )
+
 		maxTup = max( trainStringCount.items(), key=operator.itemgetter(1) );
 		ansPossibilities = [x for x in trainStringCount if trainStringCount[x] == maxTup[1]];
 		maxVal = random.choice( ansPossibilities );
