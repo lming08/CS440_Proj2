@@ -1,6 +1,6 @@
 from fileParser import *
 
-def naiveBayesStrat( trainData ):
+def naiveBayesBase( trainData ):
     probOfW = {"DT": {}, "DR": {}, "L": {}}
     topWords = getAttributeSets(trainData)
 
@@ -12,6 +12,20 @@ def naiveBayesStrat( trainData ):
         #print probOfW[fileType]
 
     return probOfW
+
+def naiveBayesImproved( trainData ):
+    probOfW = {"DT": {}, "DR": {}, "L": {}}
+    topWords = getAttributeSets(trainData)
+
+    for fileType in topWords:
+        for wordTuple in topWords[fileType]:
+                numerator = float(wordTuple[1])
+                denom = len( trainData[fileType] ) or 1.0
+                probOfW[fileType][wordTuple[0]] = ( numerator / denom  ) or ( 1.0 / denom )
+        #print probOfW[fileType]
+
+    return probOfW
+
 
 def TestNaiveBayes( probOfW, testData ):
     fileResults = []
@@ -60,5 +74,5 @@ def TestNaiveBayes( probOfW, testData ):
         if dictResults[path.basename(fileTuple[0])] == fileTuple[1]:
             totalCorrect += 1
 
-    #print "Naive Bayes correctness:", totalCorrect / totalResults
+    print "Naive Bayes correctness:", totalCorrect / totalResults
     return fileResults

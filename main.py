@@ -7,7 +7,7 @@ import re
 import operator
 import random
 from intelliGrep import *
-from naiveBayes import * 
+from naiveBayes import *
 from perceptron import *
 
 if __name__ == '__main__':
@@ -47,7 +47,8 @@ if __name__ == '__main__':
 		intelliGrepBase(testData);
 		intelliGrepImproved(testData);
     elif args.stratName == 'naiveBayes':
-        naiveProbOfW  = naiveBayesStrat( trainData )
+        #naiveProbOfW  = naiveBayesBase( trainData )
+        naiveProbOfW  = naiveBayesImproved( trainData )
         TestNaiveBayes( naiveProbOfW, testData );
     elif args.stratName == 'perceptron':
         perceptStuff = perceptronStrat(trainData)
