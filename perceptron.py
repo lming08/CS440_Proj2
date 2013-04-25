@@ -1,5 +1,7 @@
 from fileParser import *
 
+specMode = True
+
 def getRelativeFrequencies(topWords, currentFile, fileType):
 	relaFreqs = {"DR":{}, "DT":{}, "L":{}}
 	cleanData = cleanFile(currentFile )
@@ -51,7 +53,8 @@ def getTestVectors(testData, topWords):
 	return fileVectors
 
 def perceptronStrat(trainData):
-	print "Starting Preproc"
+	if specMode == False:
+		print "Starting Preproc"
 	if useBooleanBag == False:
 		topWordsDT = getNcommonishWords(cleanClass(trainData, "DT"), 20)
 		topWordsDR = getNcommonishWords(cleanClass(trainData, "DR"), 20)
@@ -61,7 +64,8 @@ def perceptronStrat(trainData):
 		topWords = getAttributeSets(trainData)
 
 	fileVectors = getFileVectors(trainData, topWords)
-	print "Preproc complete"
+	if specMode == False:
+		print "Preproc complete"
 	
 	weights = {"DR":{}, "DT":{}, "L":{}}
 	alpha = initialAlpha
@@ -70,9 +74,11 @@ def perceptronStrat(trainData):
 		for eachWord in topWords[eachType]:
 			weights[eachType][eachWord[0]] = initialWeight
 
-	print "Beginning training"
+	if specMode == False:
+		print "Beginning training"
 	for i in range(101):
-                print "Starting Iteration #" + str(i)
+                if specMode == False:
+			print "Starting Iteration #" + str(i)
                 for eachType in fileVectors:
                 	for eachFile in fileVectors[eachType]:
 				for eachPercept in weights:
@@ -85,7 +91,8 @@ def perceptronStrat(trainData):
                                         for eachWord in weights[eachPercept]:
                                                 weights[eachPercept][eachWord] += alpha*error*fileVectors[eachType][eachFile][eachWord]
                 alpha *= alphaDecay
-	print "Training Complete"
+	if specMode == False:
+		print "Training Complete"
 	#print "Resulting Weights"
 	#for eachType in weights:
 		#print eachType
@@ -96,12 +103,14 @@ def perceptronStrat(trainData):
 	return (weights, topWords)
 
 def testPerceptrons(perceptrons, testData, topWords):
-	print "Preprocessing test data"
+	if specMode == False:
+		print "Preprocessing test data"
 	fileResults = [];
 	fileVectors = getTestVectors(testData, topWords)
-	print "Preproc complete"
+	if specMode == False:
+		print "Preproc complete"
+		print "Beginning perceptron voting"
 
-	print "Beginning perceptron voting"
 	for eachFile in fileVectors:
 		results = castVotes(perceptrons, fileVectors[eachFile], topWords)
 		fileResults.append((path.basename(eachFile), random.choice(results)))
@@ -109,8 +118,9 @@ def testPerceptrons(perceptrons, testData, topWords):
                 #print fileResults.index(f), f
 
         #Calculate our results against actual
-	print "Perceptron voting complete"
-	print "Calculating number of correct result"
+	if specMode == False:
+		print "Perceptron voting complete"
+		print "Calculating number of correct result"
 
         actualResults = file(testResultsFile).read()
         actualResults = actualResults.split('\n');
@@ -128,7 +138,11 @@ def testPerceptrons(perceptrons, testData, topWords):
 		#else:
 		#	print str(fileTuple) + str(dictResults[fileTuple[0]])
 
-        print "Percent accurate = " + str(totalCorrect / totalResults)
+        if specMode == False:
+		print "Percent accurate = " + str(totalCorrect / totalResults)
+	elif specMode == True:	
+		for eachTuple in fileResults:
+			print "Perceptron, " + str(eachTuple[0]) + ", " + str(eachTuple[1])
         return fileResults;
 
 def castVotes(perceptrons, fileVector, topWords):
