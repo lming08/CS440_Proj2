@@ -1,7 +1,7 @@
 from fileParser import *
 
 def naiveBayesStrat( trainData ):
-    probOfW = {"DR": {}, "DT": {}, "L": {}}
+    probOfW = {"DT": {}, "DR": {}, "L": {}}
     topWords = getAttributeSets(trainData)
 
     for fileType in topWords:
@@ -22,8 +22,8 @@ def TestNaiveBayes( probOfW, testData ):
             totalN = float(len(fileWords))
 
         result = {
-            "DR": 1.0,
             "DT": 1.0,
+            "DR": 1.0,
             "L": 1.0
         }
         for fileType in probOfW:
@@ -43,9 +43,6 @@ def TestNaiveBayes( probOfW, testData ):
         maxAttr = max( result.items(), key=operator.itemgetter(1) )[0]
         fileResults += [ ( fileName, maxAttr ) ]
 
-    #for f in fileResults:
-        #print fileResults.index(f), f
-
     #Calculate our results against actual
     actualResults = file(testResultsFile).read()
     actualResults = actualResults.split('\n')
@@ -54,12 +51,14 @@ def TestNaiveBayes( probOfW, testData ):
         if ',' in fileName:
             lineList = fileName.split(',')
             dictResults[ lineList[0] ] =  lineList[1]
+        #print "naiveBayes,", fileName,
 
     totalResults = len( testData )
     totalCorrect = 0.0
     for fileTuple in fileResults:
+        print "naiveBayesBase, " + fileTuple[0] + ", ",fileTuple[1]
         if dictResults[path.basename(fileTuple[0])] == fileTuple[1]:
             totalCorrect += 1
 
-    print "Naive Bayes correctness:", totalCorrect / totalResults
+    #print "Naive Bayes correctness:", totalCorrect / totalResults
     return fileResults
