@@ -1,0 +1,47 @@
+\documentclass[letterpaper]{article}
+\usepackage{aaai}
+\usepackage{times}
+\usepackage{helvet}
+\usepackage{courier}
+\usepackage{graphicx}
+\usepackage{graphicx}
+
+\begin{document}
+
+\title{CS 440: Project 2\\ A Document Classifier\\ Due
+  April 26th}
+\author{Gabe Dunham, Jeff Milner, Ryan Quackenbush}
+
+\maketitle
+
+\section{Abstract} 
+A brief summarization the paper in a single paragraph.
+This documents aims to discuss the strategies our group took in implementing a basic document classifier between three document types: Deed of Reconveyance, Deed of Trust, and Liens. We will use three different strategies and to parse and determine a type for each document in the test files given. 
+
+\section{Introduction} 
+Given we have three different document types: Deeds of Reconveyance, Deed of Trust, and Liens, we are to parse through all the test data and be able to determine what type of document they are. We are given three strategies: intelligrep, naive bayes, and perceptrons to evaluate and test the documents on through training, if necessary, and testing. The results will then be used to determine the percentage of the test data which is classified correct. The data provided in for each classification will be used to train the  naive bayes and perceptrons. A TEST data directory will contain all necessary files to run our tests and compare against a results file to display the percentage of documents classified correctly.
+
+\section{Initial Strategies} 
+\subsection{IntelliGrep Strategy}
+The initial strategy was to classify each document on whether a certain word / phrase appeared most often in the document. The words used were "Deeds of Reconveyance", "Deeds of Trust", and "Lien" for Deeds of Reconveyance, Deeds of Trust, and Liens respectively. This strategy on our test data came out with values around 15 percent accuracy overall. To improve this strategy, which isn't a very good strategy to begin with, we may want to evaluate more than one word to test against and see if all of the words are contained in the document, as well as the frequency.
+
+\subsection{Naive Bayes}
+
+
+\subsection{Perceptron}
+
+\section{Improved Strategies} 
+\subsection{IntelliGrep Strategy}
+
+\subsection{Naive Bayes}
+
+\subsection{Perceptron}
+
+\section{Conclusion}
+Based on your results, argue which of your
+classiﬁers you expect to perform the best on the hidden
+data set and what elements of that classiﬁer you view as
+
+
+
+\end{document}
