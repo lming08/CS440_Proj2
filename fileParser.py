@@ -140,13 +140,26 @@ def createTestPool(trainDir, testDir, trainDirTypes):
                                 	dividedTests[myGroupIndex] += [trainDir[i] + "/" + eachFile]
                                 	currentGroupIndexes[myGroup] += 1
 
-	#for eachGroup in dividedTests:
-	#	currentGroupIndexes = [0, 0, 0]
-	#	print eachGroup
-	#	for eachTestFile in dividedTests[eachGroup]:
-	#		currentGroupIndexes[trainDirTypes.index(results[path.basename(eachTestFile)])] += 1
-	#		print eachTestFile + ", " + results[path.basename(eachTestFile)]
-	#	print currentGroupIndexes
+	if ensureEqualRepresentation == False:
+		numInGroup = len(testFiles)/10
+		for i in range(10):
+			dividedTests[i] = random.sample(testFiles, numInGroup)
+			for eachValue in dividedTests[i]:
+				testFiles.remove(eachValue)
+		for eachLeftOver in testFiles:
+			dividedTests[random.randint(0, 9)].append(eachLeftOver)
+		
+	
+	for i in range(10):
+		random.shuffle(dividedTests[i])
+
+	for eachGroup in dividedTests:
+		currentGroupIndexes = [0, 0, 0]
+		print eachGroup
+		for eachTestFile in dividedTests[eachGroup]:
+			currentGroupIndexes[trainDirTypes.index(results[path.basename(eachTestFile)])] += 1
+			print eachTestFile + ", " + results[path.basename(eachTestFile)]
+		print currentGroupIndexes
 	#for eachFile in results:
 	#	print eachFile + ", " + results[eachFile]
 	return	[testFiles, results]
