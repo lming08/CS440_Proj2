@@ -23,9 +23,10 @@ Given we have three different document types: Deeds of Reconveyance, Deed of Tru
 
 \section{Initial Strategies} 
 \subsection{IntelliGrep Strategy}
-The initial strategy was to classify each document on whether a certain word / phrase appeared most often in the document. The words used were "Deeds of Reconveyance", "Deeds of Trust", and "Lien" for Deeds of Reconveyance, Deeds of Trust, and Liens respectively. This strategy on our test data came out with values around 15 percent accuracy overall. To improve this strategy, which isn't a very good strategy to begin with, we may want to evaluate more than one word to test against and see if all of the words are contained in the document, as well as the frequency.
-
+The initial strategy was to classify each document on whether a certain word / phrase appeared most often in the document. The words used were "Deeds of Reconveyance", "Deeds of Trust", and "Lien" for Deeds of Reconveyance, Deeds of Trust, and Liens respectively. This strategy on our test data came out with values around 15 percent accuracy overall. Initially this was due to attempting to run the algorithm on the training data. Switching our data around to work on the test data improved our accuracy to about 60 percent.
+ 
 \subsection{Naive Bayes}
+The base strategy for Naive Bayes worked out reasonably well to start. The bag of words was initially not boolean, therefore causing issues with the output not being correct
 
 
 \subsection{Perceptron}
