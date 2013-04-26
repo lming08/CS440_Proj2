@@ -8,8 +8,8 @@ def cleanFileImproved(filename):
     contents = file(filename).read()
     contents = re.sub(r'[^a-zA-Z]', ' ', contents)
     if useExtraPreProc == True:
-    	contents = re.sub(r'[ii+]', ' ', contents)
-    	contents = re.sub(r'[ll+]', ' ', contents)
+    	contents = re.sub(r'i{2,}', ' ', contents)
+    	contents = re.sub(r'l{3,}', ' ', contents)
     contents = re.sub("\s+", " ", contents)
 
     return contents

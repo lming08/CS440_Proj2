@@ -44,29 +44,25 @@ def cleanFile(filename):
 
 
 def getAttributeSets(trainData):
-    topWords = {
-        "DT": [],
-        "DR": [],
-        "L": []
-    }
+    topWords = { "DT": [], "DR": [], "L": [] }
 
     for fileType in trainData:
-                totalWords = 0;
-                dataWords = {};
-                for fileName in trainData[fileType]:
-                        cleanData = cleanFile(fileName)
-                        fileWords = cleanData.split(" ");
-                        found = []
-                        for word in fileWords: #[word for word in fileWords if word not in commonWords]:
-                                if word in dataWords and word not in found:
-                                    found += [word]
-                                    dataWords[word] += 1
-                                elif word not in found:
-                                    if (ignoreSelectWords == True and word not in selectWords) or (ignoreSelectWords == False):
-                                        found += [word]
-                                        dataWords[word] = 1
+        totalWords = 0;
+        dataWords = {};
+        for fileName in trainData[fileType]:
+            cleanData = cleanFile(fileName)
+            fileWords = cleanData.split(" ");
+            found = []
+            for word in fileWords: #[word for word in fileWords if word not in commonWords]:
+                if word in dataWords and word not in found:
+                    found += [word]
+                    dataWords[word] += 1
+                elif word not in found:
+                    if (ignoreSelectWords == True and word not in selectWords) or (ignoreSelectWords == False):
+                        found += [word]
+                        dataWords[word] = 1
 
-                topWords[fileType] = sorted( dataWords.items(), key=operator.itemgetter(1) )[-20:];
+        topWords[fileType] = sorted( dataWords.items(), key=operator.itemgetter(1) )[-20:]
 
     return topWords
 
@@ -78,7 +74,7 @@ def cleanClass(trainingData, fileType):
         contents = re.sub(r'[^a-zA-Z]', ' ', contents)
     if useExtraPreProc == True:
         contents = re.sub(r'i{2,}', ' ', contents)
-        contents = re.sub(r'i{2,}', ' ', contents)
+        contents = re.sub(r'l{3,}', ' ', contents)
         contents = contents.lower()
         contents = re.sub("\s+", " ", contents)
     #print "test"
