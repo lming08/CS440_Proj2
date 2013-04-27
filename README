@@ -1,0 +1,13 @@
+Authors:
+Gabe Dunhame
+Jeff Milner
+Ryan Quackenbush
+
+Running:
+-python <DT_DIR_PATH> <DR_DIR_PATH> <L_DIR_PATH> <TEST_PATH>
+
+Results:
+The results will be printed to results.txt with the format specified
+<strategy>, <text_file>, <classification>
+
+
