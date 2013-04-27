@@ -14,26 +14,26 @@
 
 \maketitle
 
-\section{Abstract} 
+\section{Abstract}
 A brief summarization the paper in a single paragraph.
-This documents aims to discuss the strategies our group took in implementing a basic document classifier between three document types: Deed of Reconveyance, Deed of Trust, and Liens. We will use three different strategies and to parse and determine a type for each document in the test files given. 
+This documents aims to discuss the strategies our group took in implementing a basic document classifier between three document types: Deed of Reconveyance, Deed of Trust, and Liens. We will use three different strategies and to parse and determine a type for each document in the test files given.
 
-\section{Introduction} 
+\section{Introduction}
 Given we have three different document types: Deeds of Reconveyance, Deed of Trust, and Liens, we are to parse through all the test data and be able to determine what type of document they are. We are given three strategies: intelligrep, naive bayes, and perceptrons to evaluate and test the documents on through training, if necessary, and testing. The results will then be used to determine the percentage of the test data which is classified correct. The data provided in for each classification will be used to train the  naive bayes and perceptrons. A TEST data directory will contain all necessary files to run our tests and compare against a results file to display the percentage of documents classified correctly.
 
-\section{Initial Strategies} 
+\section{Initial Strategies}
 \subsection{IntelliGrep Strategy}
-The initial strategy was to classify each document on whether a certain word / phrase appeared most often in the document. The words used were "deeds of reconveyance", "deeds of trust", and "lien" for Deeds of Reconveyance, Deeds of Trust, and Liens respectively. This strategy on our test data came out with values around 15 percent accuracy overall. Initially this was due to attempting to run the algorithm on the training data. Switching our data around to work on the test data improved our accuracy to be in the 60 percent ball park since randomizing the tie breakers varied. 
- 
+The initial strategy was to classify each document on whether a certain word / phrase appeared most often in the document. The words used were "deeds of reconveyance", "deeds of trust", and "lien" for Deeds of Reconveyance, Deeds of Trust, and Liens respectively. This strategy on our test data came out with values around 15 percent accuracy overall. Initially this was due to attempting to run the algorithm on the training data. Switching our data around to work on the test data improved our accuracy to be in the 60 percent ball park since randomizing the tie breakers varied.
+
 \subsection{Naive Bayes}
-The base strategy for Naive Bayes worked out reasonably well to start. The bag of words was initially not boolean, therefore causing issues with the output not being correct
+The base strategy for Naive Bayes worked out reasonably well to start. The bag of words was initially not boolean, therefore causing issues with the output not being correct. Once we had switched it to use the boolean bag of words, the program starte working closer to how we had expected it to, getting around 83 percent. Another problem we had was that when transferring the files, the indentation seemed to screw up and indent things weird so we had to go fix those, which improved it to having about 93 percent correctness after training and checking it against the given results file. We cleaned the files and compared the words from the files against a list of common word that we found to pop up often, as well as some others just in case they do pop up. At times, adding or removing a word from tha list would increase the percentage by a few points.
 
 
 \subsection{Perceptron}
 
-\section{Improved Strategies} 
+\section{Improved Strategies}
 \subsection{IntelliGrep Strategy}
-The slight improvement for intelligrep was to change our search terms to only be upper camel case or all upper case. The reasoning behind switching is for the way document titles, headers, or section names generally lay out according to the English language. Since most titles and headers represent the content of the document as an overview, if changing the search terms resulted in matches against the titles and header we might find that our searches are far more accurate. Our implementation was simply changing the search terms to "DEEDS OF TRUST", "DEED OF RECONVEYANCE", and "LIEN". Inside of the search loop we added any instances where the exact wording, including case, matched the term and added any case where the full capitalized term was found in the document. 
+The slight improvement for intelligrep was to change our search terms to only be upper camel case or all upper case. The reasoning behind switching is for the way document titles, headers, or section names generally lay out according to the English language. Since most titles and headers represent the content of the document as an overview, if changing the search terms resulted in matches against the titles and header we might find that our searches are far more accurate. Our implementation was simply changing the search terms to "DEEDS OF TRUST", "DEED OF RECONVEYANCE", and "LIEN". Inside of the search loop we added any instances where the exact wording, including case, matched the term and added any case where the full capitalized term was found in the document.
 
 The results ended up being 13 to 15 percent higher to the original base strategy, but with the random factor being a few percentage points on both sides of the low / high end. The extra percentage points on both sides simply is a result of more ties between the text, likely because there are fewer titles, or capital words, to match against. As far as the percent increase, our initial hypothesis proved to work out, the titles or headers were a good representation of the document as a whole. Another improvement may be to check the location of the titles in relation the the top, and given a weight based on that location. The purpose would be to give more weight to a title closer to the top because higher up title may be even more relevant than any given title or header throughout the document.
 
