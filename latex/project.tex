@@ -21,6 +21,18 @@ This documents aims to discuss the strategies our group took in implementing a b
 \section{Introduction}
 Given we have three different document types: Deeds of Reconveyance, Deed of Trust, and Liens, we are to parse through all the test data and be able to determine what type of document they are. We are given three strategies: intelligrep, naive bayes, and perceptrons to evaluate and test the documents on through training, if necessary, and testing. The results will then be used to determine the percentage of the test data which is classified correct. The data provided in for each classification will be used to train the  naive bayes and perceptrons. A TEST data directory will contain all necessary files to run our tests and compare against a results file to display the percentage of documents classified correctly.
 
+\section{Obtaining the Feature Sets}
+In order to use naive bayes, it was necessary to determine a set of attributes which were common
+to each class of files. This was also used for training the perceptrons in the perceptron strategy. The base line version implementation
+obtained this list of attributes by doing the following.
+1: Counting the number of times that each word appeared in each document in the current class.
+2: Dividing that number by the total number of words in C.
+3: Taking the twenty words with the largest corresponding number.
+In order to save time on computation, and because the number of words in C doesn't change for each word in C,
+we ended up skipping the second set.
+
+It should be noted that we found this worked pretty poorly for the perceptrons and naive bayes, so one improvement to our strategy was to change how the attribute sets are obtained. More on that later though.
+
 \section{Initial Strategies}
 \subsection{IntelliGrep Strategy}
 The initial strategy was to classify each document on whether a certain word / phrase appeared most often in the document. The words used were "deeds of reconveyance", "deeds of trust", and "lien" for Deeds of Reconveyance, Deeds of Trust, and Liens respectively. This strategy on our test data came out with values around 15 percent accuracy overall. Initially this was due to attempting to run the algorithm on the training data. Switching our data around to work on the test data improved our accuracy to be in the 60 percent ball park since randomizing the tie breakers varied.
@@ -30,17 +42,43 @@ The base strategy for Naive Bayes worked out reasonably well to start. The bag o
 
 
 \subsection{Perceptron}
+The perceptron strategy is fairly simple. A perceptron takes several inputs, does some calculations based on those inputs, and then provides an output. It can, in some respects, be viewed as a function. In this implementation, we use a predetermined attribute set as the inputs. Each input's value is determined by counting the number of times the word appears in the document and then dividing by the total number of words in the document. If the word doesn't appear at all, we use one divided by the total number of words in the document. Each input is multiplied by a weight and the sum is taken over all the products. That is, the i-th input is multiplied by the i-th weight and then added to the running total until there are no more to multiple. If the the value of this sum of products is greater than the given threshold, the perceptron votes that the document is the type that it has been trained to recognize. Otherwise, it votes that the document is not the type which the perceptron has been trained to recognize.
 
+The perceptron is trained on a given set of files. The file type is know, but the perceptron is allowed to make a guess before it is 'told' that it is right or wrong. Learning takes place whenever a perceptron guesses incorrectly; Either because it guessed that it was the type it is being trained to recognize when the file isn't, or because it guessed that the file was not the type that the perceptron is being trained to recognize even though the file was.
+In this implementation, we used three perceptrons. One for each type of document. The perceptrons were each trained on all document types, as per the specification. One thing which is worth noting is that we use a for loop which looked something like this when training the perceptrons.
+For each type of document in the training documents, do
+	For each document in this type of training document, do
+		Train the perceptrons on this document.
+This will come into play later when we improve this strategy.
+ 
 \section{Improved Strategies}
 \subsection{IntelliGrep Strategy}
 The slight improvement for intelligrep was to change our search terms to only be upper camel case or all upper case. The reasoning behind switching is for the way document titles, headers, or section names generally lay out according to the English language. Since most titles and headers represent the content of the document as an overview, if changing the search terms resulted in matches against the titles and header we might find that our searches are far more accurate. Our implementation was simply changing the search terms to "DEEDS OF TRUST", "DEED OF RECONVEYANCE", and "LIEN". Inside of the search loop we added any instances where the exact wording, including case, matched the term and added any case where the full capitalized term was found in the document.
 
 The results ended up being 13 to 15 percent higher to the original base strategy, but with the random factor being a few percentage points on both sides of the low / high end. The extra percentage points on both sides simply is a result of more ties between the text, likely because there are fewer titles, or capital words, to match against. As far as the percent increase, our initial hypothesis proved to work out, the titles or headers were a good representation of the document as a whole. Another improvement may be to check the location of the titles in relation the the top, and given a weight based on that location. The purpose would be to give more weight to a title closer to the top because higher up title may be even more relevant than any given title or header throughout the document.
 
+\section{Obtaining the Feature Sets}
+In our original implementation we noticed something strange happening in the results of our naive bayes and perceptron strategies. In particular we noticed that a lot of the feature vectors in the documents we were looking at had no occurrences of the words that were in that document classes feature set. This seemed to be caused by the fact that some documents were much longer than others. We noticed that documents tend to repeat the same words frequently,  and if a document, which is much longer than the rest, repeats the same words over and over, then it can cause the feature set for that type of document to be very unrepresentative of the document type. This caused problems for both the Naive Bayes implementation as well as the Perceptron implementation.
+
+Naive Bayes, because of the way it uses the differences between types of documents, ended up having very little useful information that it could use in determining the type of a document that it was looking at. It would often give low percentage guesses for all three document types when classifying a given document. The matter was worsened by the fact that these words were often common to all three document types. Actually, it was mostly due to the latter reason.
+Perceptrons also seemed to be performing poorly as a result of similar reasons. They were being trained on results which didn't help them distinguish between the different types of documents.
+
+In order to get better results for our Naive Bayes and Perceptrons implementations, we thought that it might help to find words which were more "common" to all the files in a particular file type. For example, if every document in Lien contains the word Lien, then that word should be heavily weighted. Instead of giving a single word a heavy weight because it showed up in a single document two hundred times. We also thought that it might be a good idea to get rid of some words which showed up in every document type, such as "he", "she", ect. Finally we didn't allow any words which consist of a single letter.
+We accomplished these things by doing the following for each word in each document in the given document class.
+If we've seen the word in this document, don't do anything with it.
+If this is the first time we've seen this word in the document, add one to this class's counter for that word and add it to the list 
+of words we've seen in this document.
+If we've never the word in this class of document before, and if the word isn't a really common word, then add it to our class's word counter
+list and to the list of words we've seen in this document.
+
+This improvement helped Naive Bayes jump from an average accuracy of 76.4% to 92.4%. It was really surprising to see the accuracy drop on the perceptrons though. Just changing the
+
+
 \subsection{Naive Bayes}
 
 
 \subsection{Perceptron}
+One thing which we fou
 
 \section{Conclusion}
 Based on your results, argue which of your
