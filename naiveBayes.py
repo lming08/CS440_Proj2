@@ -8,9 +8,6 @@ def naiveBayesBase( trainData ):
     Base training for naive bayes. Returns rating of top words for each doc class
     '''
     probOfW = {"DT": {}, "DR": {}, "L": {}}
-    '''
-    topWords = {"DT":[(word, amount in doc type C), ("test", 15), ("deed", 23)], "DR":[("test", 15),...], "L": [("Lien", 25), ....] }
-    '''
     topWords = { "DT": [], "DR": [], "L": [] }
     uniqueWords = [];
     uniqueWordCt = 0;
@@ -55,9 +52,11 @@ def naiveBayesBase( trainData ):
     return probOfW
 
 def testNaiveImproved( probOfW, testData ):
+    '''
+    Improved naive bayes based on more contribution from amount of words, as well as presence
+    '''
     fileResults = []
     allFileLen = float( len( testData ) );
-    #used to calcuate P(|di|) the probablity of the length of the document
     fileLens = []
     
     for fileName in testData:
@@ -88,9 +87,9 @@ def testNaiveImproved( probOfW, testData ):
                     result[fileType] += ( nik * math.log( inner , 10) ); #log(xy) == log(x) + log(y)
                 
             if result[fileType] == 0:
-                print "Just had an underflow problem in testNaiveBayes!"
+                #print "Just had an underflow problem in testNaiveBayes!"
                 
-        #print result
+        #Using min since values are reversed
         maxAttr = min( result.items(), key=operator.itemgetter(1) )[0]
         fileResults += [ ( fileName, maxAttr ) ]
 
@@ -110,10 +109,13 @@ def testNaiveImproved( probOfW, testData ):
         if dictResults[path.basename(fileTuple[0])] == fileTuple[1]:
             totalCorrect += 1
 
-    print "Naive Bayes correctness:", totalCorrect / totalResults
+    #print "Naive Bayes correctness:", totalCorrect / totalResults
     return fileResults
 
 def testNaiveBase( probOfW, testData ):
+    '''
+    Base Naive Bayes with boolean bag option
+    '''
     fileResults = []
     for fileName in testData:
         cleanData = cleanFile(fileName )
@@ -138,7 +140,7 @@ def testNaiveBase( probOfW, testData ):
                     result[fileType] *= multiplier*probOfW[fileType][word]
                     if result[fileType] == 0:
                         print "Just had an underflow problem in testNaiveBayes!"
-
+        #Using min since values are reversed
         maxAttr = min( result.items(), key=operator.itemgetter(1) )[0]
         fileResults += [ ( fileName, maxAttr ) ]
 
@@ -154,9 +156,9 @@ def testNaiveBase( probOfW, testData ):
     totalResults = len( testData )
     totalCorrect = 0.0
     for fileTuple in fileResults:
-        print "naiveBayes, " + fileTuple[0] + ", " + fileTuple[1]
+        print "naiveBayes, " + fileTuple[0] + ", ",fileTuple[1]
         if dictResults[path.basename(fileTuple[0])] == fileTuple[1]:
             totalCorrect += 1
 
-    print "Naive Bayes correctness:", totalCorrect / totalResults
+    #print "Naive Bayes correctness:", totalCorrect / totalResults
     return fileResults

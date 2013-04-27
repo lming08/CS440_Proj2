@@ -6,12 +6,14 @@ from os import path
 import re
 import operator
 import random
+import sys
 from intelliGrep import *
 from naiveBayes import *
 from perceptron import *
 
 if __name__ == '__main__':
     import argparse
+    sys.stdout = open('results.txt', 'w');
 
     parser = argparse.ArgumentParser()
     parser.add_argument('stratName' , choices=('intelliGrep', 'naiveBayes' , 'perceptron') , default='intelliGrep' , help="Select the desired strategy: 'intelliGrep' , 'naiveBayes' , 'perceptron'")
@@ -29,18 +31,6 @@ if __name__ == '__main__':
         "DR": [],
         "L": []
     }
-
-    if useTenFoldCross == True:
-        createTestPool(trainDir, args.testDir, trainDirTypes)
-    else:
-        for i in range(len(trainDirTypes)):
-            for(root, subFolders, files) in walk(trainDir[i]):
-                for eachFile in files:
-                    trainData[trainDirTypes[i]] += [trainDir[i]+ "/" + eachFile]
-                    testData = []
-        for(root, subFolders, files) in walk(args.testDir):
-            for eachFile in files:
-                testData += [args.testDir + "/" + eachFile]
    
     for i in range(len(trainDirTypes)):
 	for(root, subFolders, files) in walk(trainDir[i]):
