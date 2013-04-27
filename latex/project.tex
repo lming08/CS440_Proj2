@@ -71,7 +71,9 @@ of words we've seen in this document.
 If we've never the word in this class of document before, and if the word isn't a really common word, then add it to our class's word counter
 list and to the list of words we've seen in this document.
 
-This improvement helped Naive Bayes jump from an average accuracy of 76.4% to 92.4%. It was really surprising to see the accuracy drop on the perceptrons though. Just changing the
+This improvement helped Naive Bayes jump from an average accuracy of 76.4% to 92.4%. It was really surprising to see the accuracy drop on the perceptrons though. Just changing from counting the appearance of each word in all documents to only counting each word once per document had almost no effect on perceptrons. Changing the attributes to leave out the common words, however, caused the average accuracy of the perceptron strategy to drop from 86.22% to 72.44%! We suspect that this was because the perceptrons gathered information on the frequency of the word within each document instead of looking at whether or not the word occurred in the document. So, even if a word is common to all three types of documents, the frequency within each type of document was useful information for the preceptrons.
+
+Although we didn't have time to investigate it, we suspect that for Naive Bayes, it would be very beneficial to only allow words to be in an attribute set for a document type, if it is not in an attribute for any other document type. It may be an over simplification of the problem, but we would have like to test it if we had had the time.
 
 
 \subsection{Naive Bayes}
@@ -82,7 +84,8 @@ The initial strategy involved using the boolean bag of words which would essenti
 The results ended up being about the same as the non-improved strategy staying at a constant 92 percent. We believe there may have been a few reasons for this. One reason would be the words read in were more even distributed among the documents, since the classifications all were a type of legal document. Another is the feature set we originally generated was a finite percentage of each classification's words. If we calculated the value of every word's impact on the document with exception of the most common, we may have seen better results since each word plays as much a negative effect as a positive effect similiar to how the boolean bag of words contributed.
 
 \subsection{Perceptron}
-One thing which we fou
+One thing which we noticed in implementing the initial perceptrons was that the order of training didn't change because the perceptrons were always trained on all of the documents in a given document class at a time before being trained on any documents in any of the other document classes. We suspected that this may have been contributing to the fairly low accuracy. In order to increase the accuracy, we changed the order in which the perceptrons were trained on the documents. We did this at the same time that we implemented the ten-fold cross validation. So, we take all the files and divide them into ten groups. We ensure that each of the ten groups has about the same number of documents, and that each type of document shows up about the same number of times in each of the ten groups.
+This increased the accuracy from an average of 86 to about 90, with some outliers in the 95% range.
 
 \section{Conclusion}
 Based on your results, argue which of your
