@@ -47,11 +47,11 @@ def getAttributeSets(trainData):
     topWords = { "DT": [], "DR": [], "L": [] }
 
     for fileType in trainData:
-        totalWords = 0;
-        dataWords = {};
+        totalWords = 0
+        dataWords = {}
         for fileName in trainData[fileType]:
             cleanData = cleanFile(fileName)
-            fileWords = cleanData.split(" ");
+            fileWords = cleanData.split(" ")
             found = []
             for word in fileWords: #[word for word in fileWords if word not in commonWords]:
                 if word in dataWords and word not in found:
@@ -82,7 +82,7 @@ def cleanClass(trainingData, fileType):
     return contents
 
 def getNcommonishWords(someString, N):
-    dataWords = {};
+    dataWords = {}
     tokens = someString.split(" ")
     for word in tokens:
         if word in dataWords:
@@ -90,7 +90,7 @@ def getNcommonishWords(someString, N):
         elif (ignoreSelectWords == True and word not in selectWords) or ignoreSelectWords == False:
             dataWords[word] = 1
 
-    commonishWords = sorted(dataWords.items(), key=operator.itemgetter(1))[-N:];
+    commonishWords = sorted(dataWords.items(), key=operator.itemgetter(1))[-N:]
     #print "test"
     #for word in commonishWords:
     #   print (word)# + ", " + str(dataWords[word]))
@@ -103,7 +103,7 @@ def createTestPool(trainDir, testDir, trainDirTypes):
     results = {}
 
     testFileStuff = file(testResultsFile).read()
-    testFileStuff = testFileStuff.split('\n');
+    testFileStuff = testFileStuff.split('\n')
     results = {}
     dividedTests = {}
     for i in range(10):
@@ -111,7 +111,7 @@ def createTestPool(trainDir, testDir, trainDirTypes):
         currentGroupIndexes = [0, 0, 0]
         for eachLine in testFileStuff:
             if ',' in eachLine:
-                    splitCurrentLine = eachLine.split(',');
+                    splitCurrentLine = eachLine.split(',')
                     testFiles += [testDir + "/" + splitCurrentLine[0]]
                     results[splitCurrentLine[0]] = splitCurrentLine[1]
 
