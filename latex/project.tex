@@ -75,7 +75,11 @@ This improvement helped Naive Bayes jump from an average accuracy of 76.4% to 92
 
 
 \subsection{Naive Bayes}
+The original naive bayes seemed to lack  the ability to account for multiple instances of the "top words" we retrieved in our feature sets. This initially required some changing of how the feature sets are calculated and counted towards the "score" of each classifcation while looping through the feature set. 
 
+The initial strategy involved using the boolean bag of words which would essentially see if the word merely existed in the document and add a weight based on it's presence or non-presence. This could lead to documents which are in considered for a classification based on one word. We started thinking about how we could incorporate a strategy which took into account the increased chance with certain words. This would require reclassifying our top words from the attribute sets to include not only the possibility of the word being in the document for a given classification, but also how many times in the classifcation as whole the word appeared in comparison the the total amount of words and unique words. If the word appeared more for a certain classification over the total amount of the words, it would make sense to give the word more weight, which we did having the "score" it contributed be a total of the number of times it appeared over the total times in the classifcation it appeared and the total number of unique words. 
+
+The results ended up being about the same as the non-improved strategy staying at a constant 92 percent. We believe there may have been a few reasons for this. One reason would be the words read in were more even distributed among the documents, since the classifications all were a type of legal document. Another is the feature set we originally generated was a finite percentage of each classification's words. If we calculated the value of every word's impact on the document with exception of the most common, we may have seen better results since each word plays as much a negative effect as a positive effect similiar to how the boolean bag of words contributed.
 
 \subsection{Perceptron}
 One thing which we fou
@@ -85,6 +89,25 @@ Based on your results, argue which of your
 classiﬁers you expect to perform the best on the hidden
 data set and what elements of that classiﬁer you view as
 
+
+\section{Future Courses}
+\subsection{Gabe D}
+
+\subsection{Jeff M}
+
+\subsection{Ryan Q}
+Most useful thing you learned in this class? 
+The most useful thing I learned was the search algorithms earlier in the course and more specifically A* search.
+
+Finish the sentence: If there was more time, I would have liked to learn more about multi-agent evironments.
+
+Finish the sentence: To make more time, I would have preferred to see less about... NOTHING! I felt the course subjects were relevant and liked the overall layout.
+
+Group Projects likes / dislikes: I liked the group work, being able to choose our language if desired, spending a little more time on an assignment, and seeing results from what we learned. I disliked the length / interference of the paper, and the choice of topics we had to stick too. Having a little more choice would be great.
+
+Writing, experiments, and analysis of projects? I find the experimenting, and analysis portion of the project valuable as it allows us to see practically what we thought would or wouldn't happen. I don't feel the writing really helped bring out the experimentation / analysis portion of the experiment, but more or less just took time away from it. I do not plan on attending graduate school immediately after undergrad, but may in the future. 
+
+Project change interest? The projects had no affect on my thought of going to graduate school later. The overally class changed how interesting I thought AI would be, but the projects didn't specifically change my mind on anything. 
 
 
 \end{document}
