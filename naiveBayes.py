@@ -154,7 +154,7 @@ def testNaiveBase( probOfW, testData ):
     totalResults = len( testData )
     totalCorrect = 0.0
     for fileTuple in fileResults:
-        print "naiveBayes, " + fileTuple[0] + ", ",fileTuple[1]
+        print "naiveBayes, " + fileTuple[0] + ", " + fileTuple[1]
         if dictResults[path.basename(fileTuple[0])] == fileTuple[1]:
             totalCorrect += 1
 
