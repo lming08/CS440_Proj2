@@ -1,17 +1,38 @@
 from fileParser import *
 
-def naiveBayesStrat( trainData ):
+def naiveBayesBase( trainData ):
     probOfW = {"DT": {}, "DR": {}, "L": {}}
     topWords = getAttributeSets(trainData)
 
     for fileType in topWords:
         for wordTuple in topWords[fileType]:
-                numerator = float(wordTuple[1])
-                denom = len( trainData[fileType] ) or 1.0
-                probOfW[fileType][wordTuple[0]] = ( numerator / denom  ) or ( 1.0 / denom )
+            numerator = float(wordTuple[1])
+            denom = len( trainData[fileType] ) or 1.0
+            probOfW[fileType][wordTuple[0]] = ( numerator / denom  ) or ( 1.0 / denom )
         #print probOfW[fileType]
 
     return probOfW
+
+def naiveBayesImproved( trainData ):
+    probOfW = {"DT": {}, "DR": {}, "L": {}}
+    topWords = getAttributeSets(trainData)
+
+    for fileType in topWords:
+        for wordTuple in topWords[fileType]:
+            numerator = float(wordTuple[1])
+            denom = len( trainData[fileType] ) or 1.0
+            probOfW[fileType][wordTuple[0]] = ( numerator / denom  ) or ( 1.0 / denom )
+        #print probOfW[fileType]
+
+    return probOfW
+
+# No where close to done
+#def trainMultinomialBayes( trainData ):
+    #topWords = getAttributeSets(trainData)
+    #N = 0
+    #for type in trainData:
+        #N += len(trainData[type])
+    #print N
 
 def TestNaiveBayes( probOfW, testData ):
     fileResults = []
@@ -51,14 +72,13 @@ def TestNaiveBayes( probOfW, testData ):
         if ',' in fileName:
             lineList = fileName.split(',')
             dictResults[ lineList[0] ] =  lineList[1]
-        #print "naiveBayes,", fileName,
 
     totalResults = len( testData )
     totalCorrect = 0.0
     for fileTuple in fileResults:
-        print "naiveBayesBase, " + fileTuple[0] + ", ",fileTuple[1]
+        print "naiveBayes, " + fileTuple[0] + ", " + fileTuple[1]
         if dictResults[path.basename(fileTuple[0])] == fileTuple[1]:
             totalCorrect += 1
 
-    #print "Naive Bayes correctness:", totalCorrect / totalResults
+    print "Naive Bayes correctness:", totalCorrect / totalResults
     return fileResults
