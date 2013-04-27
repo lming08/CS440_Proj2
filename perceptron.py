@@ -294,19 +294,21 @@ def usePerceptrons(trainDirs, testDir, trainData, testData):
                 	attributeTests += dividedTests[i]
             	
 		attributes = getAttributeSets10(attributeTests, results)
-		perceptStuff = perceptronStrat10(attributeTests, results, attributes)
-		perceptrons = perceptStuff[0]
-            	#for i in range(10):
-                #	trainingTests = []
-                #	for j in range(10):
-                 #   		if j != i:
-		#			trainingTests += dividedTests[j]
-                #	perceptStuff = perceptronStrat10(trainingTests, results, attributes)
-                #	perceptrons = perceptStuff[0]
-                #	averageAccuracy += testPerceptrons10(perceptrons, dividedTests[i], attributes, results)
-            	#averageAccuracy *= .1
-		testPerceptrons(perceptrons, testData, attributes)
-            	print "avg = " + str(averageAccuracy)
+		if specMode == True:
+			perceptStuff = perceptronStrat10(attributeTests, results, attributes)
+			perceptrons = perceptStuff[0]
+			testPerceptrons(perceptrons, testData, attributes)
+		else:
+            		for i in range(10):
+                		trainingTests = []
+                		for j in range(10):
+                   			if j != i:
+						trainingTests += dividedTests[j]
+                		perceptStuff = perceptronStrat10(trainingTests, results, attributes)
+                		perceptrons = perceptStuff[0]
+                		averageAccuracy += testPerceptrons10(perceptrons, dividedTests[i], attributes, results)
+            		averageAccuracy *= .1
+            		print "avg = " + str(averageAccuracy)
         else:
 		for eachType in trainData:
 			random.shuffle(trainData[eachType])
