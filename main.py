@@ -29,19 +29,15 @@ if __name__ == '__main__':
         "DR": [],
         "L": []
     }
-    if useTenFoldCross == True:
-        createTestPool(trainDir, args.testDir, trainDirTypes)
-    else:
-        for i in range(len(trainDirTypes)):
-            for(root, subFolders, files) in walk(trainDir[i]):
-                for eachFile in files:
-                    trainData[trainDirTypes[i]] += [trainDir[i]+ "/" + eachFile]
-                    testData = []
-        for(root, subFolders, files) in walk(args.testDir):
-            for eachFile in files:
-                testData += [args.testDir + "/" + eachFile]
-
-
+   
+    for i in range(len(trainDirTypes)):
+	for(root, subFolders, files) in walk(trainDir[i]):
+	    for eachFile in files:
+		trainData[trainDirTypes[i]] += [trainDir[i]+ "/" + eachFile]
+    testData = []
+    for(root, subFolders, files) in walk(args.testDir):
+	for eachFile in files:
+	    testData += [args.testDir + "/" + eachFile]
 
     if args.stratName == 'intelliGrep':
 		intelliGrepBase(testData);
@@ -51,7 +47,4 @@ if __name__ == '__main__':
         naiveProbOfW  = naiveBayesImproved( trainData )
         TestNaiveBayes( naiveProbOfW, testData );
     elif args.stratName == 'perceptron':
-        perceptStuff = perceptronStrat(trainData)
-        perceptrons = perceptStuff[0]
-        topWords = perceptStuff[1]
-        testPerceptrons(perceptrons, testData, topWords)
+	usePerceptrons(trainDir, args.testDir, trainData, testData)

@@ -19,10 +19,11 @@ selectWords = [
 testResultsFile = "data/test-results.txt"
 ignoreSelectWords = True
 useBooleanBag = True
-useTenFoldCross = False
+useTenFoldCross = True
 useExtraPreProc = True
 ensureEqualRepresentation = True
 
+specMode = False
 initialAlpha = .1
 alphaDecay = .99
 initialWeight = 1.0
@@ -66,6 +67,32 @@ def getAttributeSets(trainData):
 
     return topWords
 
+def getAttributeSets10(trainData, results):
+	topWords = {
+	"DR": [],
+	"DT": [],
+	"L": []
+    }
+
+	for fileType in topWords:
+		dataWords = {};
+		for fileName in trainData:
+			if results[path.basename(fileName)] == fileType:
+				cleanData = cleanFile(fileName)
+				fileWords = cleanData.split(" ");
+				found = []
+				for word in fileWords: #[word for word in fileWords if word not in commonWords]:
+					if word in dataWords and word not in found:
+						found += [word]
+						dataWords[word] += 1
+					elif word not in found:
+						if (ignoreSelectWords == True and word not in selectWords) or (ignoreSelectWords == False):
+							found += [word]
+							dataWords[word] = 1
+
+		topWords[fileType] = sorted( dataWords.items(), key=operator.itemgetter(1) )[-20:];
+	#print topWords
+	return topWords
 
 def cleanClass(trainingData, fileType):
     contents = " "
@@ -97,77 +124,39 @@ def getNcommonishWords(someString, N):
     #print commonishWords
     return commonishWords
 
+def createTestPool(trainDir, trainDirTypes):
+	testFiles = []
+	results = {}
 
-def createTestPool(trainDir, testDir, trainDirTypes):
-    testFiles = []
-    results = {}
+	results = {}
+	dividedTests = {}
+	for i in range(10):
+		dividedTests[i] = []
+	currentGroupIndexes = [0, 0, 0]
 
-    testFileStuff = file(testResultsFile).read()
-    testFileStuff = testFileStuff.split('\n')
-    results = {}
-    dividedTests = {}
-    for i in range(10):
-        dividedTests[i] = []
-        currentGroupIndexes = [0, 0, 0]
-        for eachLine in testFileStuff:
-            if ',' in eachLine:
-                    splitCurrentLine = eachLine.split(',')
-                    testFiles += [testDir + "/" + splitCurrentLine[0]]
-                    results[splitCurrentLine[0]] = splitCurrentLine[1]
+	for i in range(len(trainDirTypes)):
+		for(root, subFolders, files) in walk(trainDir[i]):
+			for eachFile in files:
+				testFiles += [trainDir[i] + "/" + eachFile]
+				results.update({eachFile:trainDirTypes[i]})
 
-            if ensureEqualRepresentation == True:
-                myGroup = trainDirTypes.index(splitCurrentLine[1])
-                myGroupIndex = currentGroupIndexes[myGroup] % 10
-                dividedTests[myGroupIndex] += [testDir + "/" + splitCurrentLine[0]]
-                currentGroupIndexes[myGroup] += 1
+				if ensureEqualRepresentation == True:
+					myGroup = i
+					myGroupIndex = currentGroupIndexes[myGroup] % 10
+					dividedTests[myGroupIndex] += [trainDir[i] + "/" + eachFile]
+					currentGroupIndexes[myGroup] += 1
 
-
-    for i in range(len(trainDirTypes)):
-            for(root, subFolders, files) in walk(trainDir[i]):
-                for eachFile in files:
-                    testFiles += [trainDir[i] + "/" + eachFile]
-                    results.update({eachFile:trainDirTypes[i]})
-
-                    if ensureEqualRepresentation == True:
-                        myGroup = i
-                        myGroupIndex = currentGroupIndexes[myGroup] % 10
-                        dividedTests[myGroupIndex] += [trainDir[i] + "/" + eachFile]
-                        currentGroupIndexes[myGroup] += 1
-
-    if ensureEqualRepresentation == False:
-        numInGroup = len(testFiles)/10
-        for i in range(10):
-            dividedTests[i] = random.sample(testFiles, numInGroup)
-            for eachValue in dividedTests[i]:
-                testFiles.remove(eachValue)
-        for eachLeftOver in testFiles:
-            dividedTests[random.randint(0, 9)].append(eachLeftOver)
+				if ensureEqualRepresentation == False:
+					numInGroup = len(testFiles)/10
+					for i in range(10):
+						dividedTests[i] = random.sample(testFiles, numInGroup)
+						for eachValue in dividedTests[i]:
+							testFiles.remove(eachValue)
+	for eachLeftOver in testFiles:
+		dividedTests[random.randint(0, 9)].append(eachLeftOver)
 
 
-    for i in range(10):
-        random.shuffle(dividedTests[i])
+	for i in range(10):
+		random.shuffle(dividedTests[i])
 
-    for eachGroup in dividedTests:
-        currentGroupIndexes = [0, 0, 0]
-        print eachGroup
-        for eachTestFile in dividedTests[eachGroup]:
-            currentGroupIndexes[trainDirTypes.index(results[path.basename(eachTestFile)])] += 1
-            print eachTestFile + ", " + results[path.basename(eachTestFile)]
-        print currentGroupIndexes
-    #for eachFile in results:
-    #   print eachFile + ", " + results[eachFile]
-    return  [testFiles, results]
-
-def subDivideTests(testFiles, testResults):
-    dividedTests = {}
-    numInGroup = len(testFileResults)/10
-
-    if ensureEqualRepresentation == True:
-        random.shuffle(testResults)
-        fileTypes = ["DT", "DR", "L"]
-
-
-    for i in range(10):
-        results[i] = random.sample(testFiles, numInGroup)
-
-
+	return [dividedTests, results]
