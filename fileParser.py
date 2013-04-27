@@ -10,7 +10,7 @@ import random
 
 selectWords = [
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h','i', 'j', 'k', 'l','m','n','o','p','q','r','s','t','u','v','w','x','y','z', '',
-    'be', 'to', 'in', 'at', 'no', 'do', 'go','he','we', 'it', 'or', 'my',' on', 'is', 'as', 'by', 'my',
+    'be', 'to', 'in', 'at', 'no', 'do', 'go','he','we', 'it', 'or', 'my', 'on', 'is', 'as', 'by', 'my',
     'the', 'she', 'him', 'her', 'you', 'and', 'new', 'was', 'how', 'why', 'all', 'for', 'any', 'not',
     'what', 'that','have', 'from', 'this', 'most', 'then', 'also',
     'qwerty'

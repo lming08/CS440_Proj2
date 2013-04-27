@@ -41,15 +41,13 @@ if __name__ == '__main__':
             for eachFile in files:
                 testData += [args.testDir + "/" + eachFile]
 
-
-
     if args.stratName == 'intelliGrep':
 		intelliGrepBase(testData);
 		intelliGrepImproved(testData);
     elif args.stratName == 'naiveBayes':
-        #naiveProbOfW  = naiveBayesBase( trainData )
-        naiveProbOfW  = naiveBayesImproved( trainData )
-        TestNaiveBayes( naiveProbOfW, testData );
+        naiveProbOfW  = naiveBayesBase( trainData )
+        testNaiveBase( naiveProbOfW, testData );
+        testNaiveImproved( naiveProbOfW, testData );
     elif args.stratName == 'perceptron':
         perceptStuff = perceptronStrat(trainData)
         perceptrons = perceptStuff[0]
